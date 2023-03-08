@@ -59,7 +59,30 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  
+  function playsound(e){
+    // console.log(e.keyCode);
+    //const audio = document.querySelector('audio[data-key="${e.keyCode}"]');
+    const audio = document.querySelector(`audio[data-key='${e.keyCode}']`);
+    const key = document.querySelector(`.key[data-key='${e.keyCode}']`);
+    if(!audio) return;
+    // console.log(audio);
+    audio.currentTime = 0; //doesn't wait for the audio to end and plays each time key is pressed in succession
+    audio.play();
+    // console.log(key); //shows which key is hit
+    key.classList.add('playing');
+  }
+  
+  function removeTransition(e){
+    if(e.propertyName !== 'transform') return ; //skipping if it's not transform i.e, if no change then skip
+    // console.log(e.propertyName);
+    this.classList.remove('playing'); //this = key , called in line 82 inside keys.foreach
+  }
+  
+  const keys = document.querySelectorAll('.key');
+  keys.forEach(key => key.addEventListener('transitionend' , removeTransition));
 
+  window.addEventListener('keydown' , playsound );
 </script>
 
 
